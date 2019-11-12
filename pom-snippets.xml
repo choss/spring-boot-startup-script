@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+		 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+  
+	<properties>
+		<start.jar.file>lib/myjar-${project.version}.jar</start.jar.file>
+		<start.java.options>-Xmx1024m</start.java.options>
+		<start.deployment.directory>/opt/apps/myapp</start.deployment.directory>
+    <start.kill.timeout>10</start.kill.timeout>
+	</properties>
+  
+ <dependencies>
+		<dependency>
+			<groupId>mygroup</groupId>
+			<artifactId>myapp</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+  
+<build>
+		<resources>
+			<resource>
+				<filtering>true</filtering>
+				<directory>src/main/filters</directory>
+				<targetPath>${project.build.directory}/release_preparation</targetPath>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-release-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/release_prep</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+ 		  </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>create-archive</id>
+						<phase>${archive.phase}</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<inherited>true</inherited>
+						<configuration>
+							<descriptors>
+								<descriptor>src/assembly/jars.xml</descriptor>
+ 								<descriptor>src/assembly/configs.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+  </build>
+</project>

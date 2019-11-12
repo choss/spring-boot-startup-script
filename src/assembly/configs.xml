@@ -1,0 +1,28 @@
+<assembly>
+	<id>configs</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+
+	<fileSets>
+		<fileSet>
+			<directory>${project.build.directory}/release_preparation</directory>
+			<outputDirectory>.</outputDirectory>
+			<fileMode>0740</fileMode>
+			<directoryMode>0750</directoryMode>
+			<includes>
+				<include>*.sh</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.build.directory}/release_preparation</directory>
+			<outputDirectory>.</outputDirectory>
+			<fileMode>0640</fileMode>
+			<directoryMode>0750</directoryMode>
+			<includes>
+				<include>*.properties</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>

@@ -17,13 +17,40 @@
 #
 # Repo: https://github.com/tyrion9/spring-boot-startup-script
 #
-######### PARAM ######################################
+######### MAVEN PARAM EXAMPLE ######################################
 
+# define the variables as properties in the maven pom and filter the resources 
+#
+#<properties>
+#        <start.jar.file>myjar-${project.version}.jar</start.jar.file>
+#	<start.java.options>-Xmx1024m</start.java.options>
+#	<start.deployment.directory>/opt/apps/myapp</start.deployment.directory>
+#</properties>
+
+#<build>
+#       <resources>
+#	        <resource>
+#		        <filtering>true</filtering>
+#			<directory>src/main/filters</directory>
+#			<targetPath>${project.build.directory}/release_preparation</targetPath>
+#		</resource>
+#      </resources>
+#</build>
+
+
+# JAVA_OPT=${start.java.options}
+# JARFILE=${start.jar.file}
+# cd ${start.deployment.directory}
+# TIMEOUT=${start.kill.timeout}
+
+######### PARAM ######################################
 JAVA_OPT=-Xmx1024m
 JARFILE=`ls -1r *.jar 2>/dev/null | head -n 1`
 PID_FILE=pid.file
 RUNNING=N
 PWD=`pwd`
+TIMEOUT=10
+
 
 ######### DO NOT MODIFY ########
 
@@ -54,6 +81,12 @@ start()
 stop()
 {
         if [ $RUNNING == "Y" ]; then
+        	echo "Shutting down application gracefully pid=$PID, waiting $TIMEOUT"
+        	kill $PID
+		timeout $TIMEOUT tail --pid=$PID -f /dev/null
+		if [ $? -ne 0 ]; then
+  		  echo "Application did not shut down gracefully, killing $PID"
+		fi
                 kill -9 $PID
                 rm -f $PID_FILE
                 echo "Application stopped"

@@ -1,0 +1,19 @@
+<assembly>
+    <id>lib</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}/release_preparation</directory>
+            <outputDirectory>lib</outputDirectory>
+            <fileMode>0640</fileMode>
+            <directoryMode>0750</directoryMode>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

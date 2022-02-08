@@ -73,7 +73,8 @@ start()
                         nohup java  $JAVA_OPT -Djava.security.egd=file:/dev/./urandom -jar $PWD/$JARFILE > nohup.out 2>&1  &
                         echo $! > $PID_FILE
                         echo "Application $JARFILE starting..."
-                        tail -f nohup.out
+			sleep 1
+                        tail -n 100 nohup.out
                 fi
         fi
 }

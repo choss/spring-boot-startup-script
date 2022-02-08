@@ -75,6 +75,8 @@ start()
                         echo "Application $JARFILE starting..."
 			sleep 1
                         tail -n 100 nohup.out
+			# WHEN RUNNING IN DOCKER USE
+			# tail -f nohup.out
                 fi
         fi
 }
